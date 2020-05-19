@@ -25,7 +25,7 @@ services:
     volumes:
       - ./nginx:/etc/nginx/conf.d
     ports:
-      - 443:443
+      - 444:444
     links:
       - pgadmin
       - xk
@@ -47,3 +47,5 @@ services:
       - PORT=80
     links: 
       - pg
+    ports:
+      - 80:80

@@ -11,6 +11,6 @@ func main() {
 	router.Use(cors.Default())
 
 	apiRouter := router.Group("/api")
-	apiRouter.GET("/status[SAT]", statusApi.GinHandler)
+	apiRouter.GET("/status[ats]", statusApi.GinHandler)
 	router.Run()
 }

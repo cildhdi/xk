@@ -31,7 +31,7 @@ func init() {
 	fmt.Println("connected to database")
 
 	//migrates
-	db.AutoMigrate(&Auth{})
+	db.AutoMigrate(&BasicUser{}, &Admin{}, &Teacher{}, &Student{}, &Academy{})
 }
 
 //Db gorm.DB
