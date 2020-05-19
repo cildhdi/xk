@@ -1,0 +1,79 @@
+.login-page {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  .topbar {
+    height: 95px;
+    width: 100%;
+    background: url(https://oauth.shu.edu.cn/images/headerbg.jpg) repeat-x;
+    .logo {
+      height: 95px;
+      margin-left: 30px;
+      background: url(https://oauth.shu.edu.cn/images/logo-white.png) 0/170px
+        no-repeat;
+    }
+  }
+  .login-area {
+    flex: 1;
+    background: url(https://oauth.shu.edu.cn/images/login-bg.jpg) center/cover
+      repeat-x;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+    .login-form {
+      padding: 30px;
+      background-color: rgba(255, 255, 255, 0.8);
+      border-top: 4px solid #275085;
+      margin-right: 70px;
+      display: flex;
+      flex-direction: column;
+      .login-title {
+        font-size: 22px;
+        color: #275085;
+      }
+      input {
+        width: 290px;
+        margin-top: 20px;
+        padding: 10px;
+        border: 1px solid #ddd;
+        color: #222;
+        background: #fff;
+        border-radius: 3px;
+        outline: none;
+      }
+      .message {
+        font-size: 12px;
+        margin-top: 5px;
+        text-align: left;
+        min-height: 20px;
+        color: red;
+      }
+      .submit {
+        margin-top: 15px;
+        outline: none;
+        padding: 10px 0;
+        background-color: #275085;
+        border: none;
+        color: #fff;
+        width: 100%;
+        border-radius: 6px;
+      }
+    }
+  }
+  .footer {
+    height: 78px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: url(https://oauth.shu.edu.cn/images/footerbg.jpg) repeat-x;
+    div {
+      font-size: 10px;
+      text-align: center;
+      line-height: 1.4;
+      color: #fff;
+    }
+  }
+}
