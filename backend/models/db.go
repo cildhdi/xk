@@ -1,6 +1,7 @@
 package models
 
 import (
+	"crypto/md5"
 	"fmt"
 	"time"
 
@@ -31,7 +32,26 @@ func init() {
 	fmt.Println("connected to database")
 
 	//migrates
-	db.AutoMigrate(&BasicUser{}, &Admin{}, &Teacher{}, &Student{}, &Academy{})
+	db.AutoMigrate(&BasicUser{}, &Teacher{}, &Student{}, &Academy{})
+
+	//check
+	adminCount := 0
+	db.Model(&BasicUser{}).Where("role=?", RAdmin).Count(&adminCount)
+	if adminCount == 0 {
+		adminRawPswwd := []byte(config.AdminPw)
+		md5bytes := md5.Sum(adminRawPswwd)
+		bu := BasicUser{
+			Username: config.AdminUn,
+			Secret:   fmt.Sprintf("%x", md5bytes),
+			Role:     RAdmin,
+		}
+		db.Create(&bu)
+		if bu.ID != 0 {
+			fmt.Println("create admin successfully")
+		} else {
+			fmt.Println("failed to create admin")
+		}
+	}
 }
 
 //Db gorm.DB

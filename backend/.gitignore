@@ -1,3 +1,5 @@
 nginx/cert/
 .env
 *.tmp
+.vscode
+__debug_bin

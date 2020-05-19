@@ -16,6 +16,8 @@ var (
 	DbUser     = ""
 	DbName     = ""
 	DbPassword = ""
+	AdminUn    = ""
+	AdminPw    = ""
 )
 
 func init() {
@@ -33,6 +35,8 @@ func init() {
 	DbUser = viper.GetString("POSTGRES_USER")
 	DbPassword = viper.GetString("POSTGRES_PASSWORD")
 	DbName = viper.GetString("POSTGRES_DB")
+	AdminUn = viper.GetString("ADMINUN")
+	AdminPw = viper.GetString("ADMINPW")
 
 	fmt.Printf(`
 	Please check config variables:
@@ -43,8 +47,10 @@ func init() {
 		DbUser     = %s
 		DbName     = %s
 		DbPassword = %s
+		AdminUn = %s
+		AdminPw = %s
 	service will start after 10 seconds...
-	`, Database, DbHost, DbPort, DbSSLMode, DbUser, DbName, DbPassword)
+	`, Database, DbHost, DbPort, DbSSLMode, DbUser, DbName, DbPassword, AdminUn, AdminPw)
 
 	time.Sleep(time.Second * 10)
 }

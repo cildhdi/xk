@@ -12,7 +12,7 @@ const (
 
 type BasicUser struct {
 	gorm.Model
-	Username   string
+	Username   string `gorm:"unique;not null"`
 	Secret     string
 	Role       string
 	Name       string
