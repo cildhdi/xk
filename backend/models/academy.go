@@ -6,7 +6,7 @@ import (
 
 type Academy struct {
 	gorm.Model
-	Name  string
+	Name  string `gorm:"unique;not null"`
 	Addr  string
 	Phone string
 }

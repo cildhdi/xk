@@ -6,8 +6,7 @@ import (
 
 type Teacher struct {
 	gorm.Model
-	BasicUserID uint
-	AcademyID   uint
+	BasicUserID uint `gorm:"not null"`
 	Level       string
 	Salary      uint
 }

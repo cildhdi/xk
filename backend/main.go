@@ -15,6 +15,18 @@ func main() {
 	apiRouter := router.Group("/api")
 	apiRouter.POST("/login", api.AuthMiddleware.LoginHandler)
 	apiRouter.Use(api.AuthMiddleware.MiddlewareFunc())
-	apiRouter.GET("/status[sat]", statusApi.GinHandler)
+	apiRouter.GET("/status[ast]", statusApi.GinHandler)
+
+	apiRouter.POST("/user[ast]", api.CuBasicUsers)
+	apiRouter.GET("/users[ast]", api.Users)
+
+	apiRouter.POST("/term[a]", api.CuTerm)
+	apiRouter.GET("/terms[ast]", api.Terms)
+
+	apiRouter.POST("/academy[a]", api.CuAcademy)
+	apiRouter.GET("/academys[ast]", api.Academys)
+
+	apiRouter.POST("/course[a]", api.CuCourse)
+	apiRouter.GET("/courses[ast]", api.Courses)
 	router.Run()
 }

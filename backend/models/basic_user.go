@@ -13,10 +13,11 @@ const (
 type BasicUser struct {
 	gorm.Model
 	Username   string `gorm:"unique;not null"`
-	Secret     string
-	Role       string
-	Name       string
-	Sex        string
-	Birthday   string
-	Birthplace string
+	Secret     string `gorm:"not null"`
+	Role       string `gorm:"not null"`
+	Name       string `gorm:"not null"`
+	Sex        string `gorm:"not null"`
+	Birthday   string `gorm:"not null"`
+	Birthplace string `gorm:"not null"`
+	AcademyID  uint   `gorm:"not null"`
 }

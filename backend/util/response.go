@@ -12,7 +12,6 @@ const (
 	ParamError
 	DatabaseError
 	Unauthorized
-	OrderError
 )
 
 // Response 响应

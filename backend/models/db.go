@@ -32,7 +32,7 @@ func init() {
 	fmt.Println("connected to database")
 
 	//migrates
-	db.AutoMigrate(&BasicUser{}, &Teacher{}, &Student{}, &Academy{})
+	db.AutoMigrate(&BasicUser{}, &Teacher{}, &Academy{})
 
 	//check
 	adminCount := 0
@@ -44,6 +44,8 @@ func init() {
 			Username: config.AdminUn,
 			Secret:   fmt.Sprintf("%x", md5bytes),
 			Role:     RAdmin,
+			Name:     "杨磊",
+			Sex:      "男",
 		}
 		db.Create(&bu)
 		if bu.ID != 0 {
