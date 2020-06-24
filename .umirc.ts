@@ -7,6 +7,13 @@ export default defineConfig({
   antd: {},
   routes: [
     { path: '/login', component: '@/pages/login' },
-    { path: '/', component: '@/pages/index' },
+    {
+      path: '/',
+      wrappers: ['@/wrappers/auth'],
+      component: '@/layouts/index',
+      routes: [
+        
+      ],
+    },
   ],
 });

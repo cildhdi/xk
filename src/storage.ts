@@ -1,22 +1,26 @@
 import { DB } from './db';
+import { APIResponse, ResponseData } from './api';
 
 export interface Storage {
-  user: {
-    token: string;
-    expire: string;
-    bu: DB.BasicUser;
-  };
+  user: ResponseData<'login'>;
 }
 
-function saveStorage<K extends keyof Storage>(key: K, value: Storage[K]) {
+export function saveStorage<K extends keyof Storage>(
+  key: K,
+  value: Storage[K],
+) {
   localStorage.setItem(key, JSON.stringify(value));
 }
 
-function getStorage<K extends keyof Storage>(key: K) {
+export function getStorage<K extends keyof Storage>(key: K) {
   const item = localStorage.getItem(key);
   return item ? (JSON.parse(item) as Storage[K]) : null;
 }
 
-function clearStorage() {
+export function removeStorage<K extends keyof Storage>(key: K) {
+  localStorage.removeItem(key);
+}
+
+export function clearStorage() {
   localStorage.clear();
 }

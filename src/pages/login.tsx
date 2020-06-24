@@ -1,21 +1,37 @@
 import React from 'react';
-
+import { message } from 'antd';
 import './login.scss';
+import { api, ResponseCode, APIResponse } from '@/api';
+import { saveStorage } from '@/storage';
 
 interface State {
   username: string;
   password: string;
-  msg: string;
 }
 
 export default class Login extends React.Component<{}, State> {
   state: State = {
     username: '',
     password: '',
-    msg: 'error message',
   };
 
-  showMsg = (msg: string) => this.setState({ msg });
+  submit = async () => {
+    if (this.state.username.length === 0 || this.state.password.length === 0) {
+      message.error('请填写完整的信息');
+      return;
+    }
+    try {
+      let resp = await api.login(this.state);
+      if (resp.code === ResponseCode.Ok) {
+        message.success('登录成功');
+        saveStorage('user', resp.data);
+      } else {
+        message.error('登录失败，请检查用户名、密码是否正确');
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   render() {
     return (
@@ -33,11 +49,11 @@ export default class Login extends React.Component<{}, State> {
             />
             <input
               placeholder="请输入密码/Password"
+              type="password"
               value={this.state.password}
               onChange={e => this.setState({ password: e.target.value })}
             />
-            {this.state.msg && <div className="message">{this.state.msg}</div>}
-            <button className="submit">登录/Login</button>
+            <button className="submit" onClick={this.submit}>登录/Login</button>
           </div>
         </div>
         <div className="footer">
