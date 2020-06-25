@@ -46,10 +46,6 @@ export default class extends React.Component<{}, State> {
   formRef = React.createRef<FormInstance>();
 
   componentDidMount = async () => {
-    message.loading({
-      content: '加载数据...',
-      duration: 1,
-    });
     this.setState({
       courses: courses.getItems(),
       opends: opends
@@ -79,10 +75,6 @@ export default class extends React.Component<{}, State> {
   };
 
   handleOk = async (values: any) => {
-    message.loading({
-      content: '处理中...',
-      duration: 1,
-    });
     console.log(values);
     this.setState({
       showModal: false,

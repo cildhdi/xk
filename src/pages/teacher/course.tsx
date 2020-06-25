@@ -35,12 +35,13 @@ export default class extends React.Component<{}, State> {
   formRef = React.createRef<FormInstance>();
 
   componentDidMount = async () => {
-    message.loading({
-      content: '加载数据...',
-      duration: 1,
-    });
+    let user = getStorage('user');
     this.setState({
-      courses: courses.getItems(),
+      courses: courses.getItems().filter(v => {
+        if (v.academy_id === user?.academy_id) {
+          return v;
+        }
+      }),
       acadamys: academys.getItems(),
       users: users.getItems(),
     });
@@ -67,12 +68,7 @@ export default class extends React.Component<{}, State> {
   };
 
   handleOk = async (values: any) => {
-    message.loading({
-      content: '处理中...',
-      duration: 1,
-    });
-    opends.insert(values);
-    message.success('开课成功');
+    await opends.insert(values);
     this.setState({
       showModal: false,
     });
@@ -150,7 +146,9 @@ export default class extends React.Component<{}, State> {
             >
               <Select placeholder="请选择课程" allowClear>
                 {this.state.courses.map(v => (
-                  <Option value={v.id}>{v.name}</Option>
+                  <Option key={v.id} value={v.id}>
+                    {v.name}
+                  </Option>
                 ))}
               </Select>
             </Form.Item>

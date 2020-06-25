@@ -36,10 +36,6 @@ export default class extends React.Component<{}, State> {
   formRef = React.createRef<FormInstance>();
 
   componentDidMount = async () => {
-    message.loading({
-      content: '加载数据...',
-      duration: 1,
-    });
     this.setState({
       users: users
         .getItems()
@@ -68,16 +64,12 @@ export default class extends React.Component<{}, State> {
   };
 
   handleOk = async (values: any) => {
-    message.loading({
-      content: '处理中...',
-      duration: 1,
-    });
     values.secret = values.username.toString();
     values.role = roleName;
     if (this.state.isAdd) {
-      users.insert(values as User);
+      await users.insert(values as User);
     } else {
-      users.update(values as User);
+      await users.update(values as User);
     }
     this.setState({
       showModal: false,
@@ -201,7 +193,9 @@ export default class extends React.Component<{}, State> {
             >
               <Select placeholder="请选择学院" allowClear>
                 {this.state.acadamys.map(v => (
-                  <Option value={v.id}>{v.name}</Option>
+                  <Option key={v.id} value={v.id}>
+                    {v.name}
+                  </Option>
                 ))}
               </Select>
             </Form.Item>

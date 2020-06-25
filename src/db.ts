@@ -1,9 +1,27 @@
+import { message } from 'antd';
+
 class Db<T extends { id: number }> {
   storageKey = 'storageKey';
 
   constructor(storageKey: string) {
     this.storageKey = storageKey;
   }
+
+  begin = async () => {
+    message.loading({
+      content: '加载中...',
+      key: this.storageKey,
+    });
+  };
+
+  end = async () => {
+    await new Promise(resolve => setTimeout(resolve, 500));
+    message.success({
+      content: '成功',
+      key: this.storageKey,
+      duration: 0.5,
+    });
+  };
 
   getItems = () => {
     let raw = localStorage.getItem(this.storageKey);
@@ -18,7 +36,8 @@ class Db<T extends { id: number }> {
     localStorage.setItem(this.storageKey, JSON.stringify(items));
   };
 
-  insert = (item: Partial<T>) => {
+  insert = async (item: Partial<T>) => {
+    this.begin();
     let items = this.getItems();
     let maxID = 1;
     for (const i of items) {
@@ -28,6 +47,7 @@ class Db<T extends { id: number }> {
     console.log(item);
     items.push(item as T);
     this.setItems(items);
+    await this.end();
   };
 
   query = (conds: Partial<T>) => {
@@ -41,7 +61,8 @@ class Db<T extends { id: number }> {
     });
   };
 
-  update = (item: T) => {
+  update = async (item: T) => {
+    this.begin();
     let items = this.getItems();
     for (let index = 0; index < items.length; index++) {
       if (items[index].id == item.id) {
@@ -49,9 +70,27 @@ class Db<T extends { id: number }> {
       }
     }
     this.setItems(items);
+    await this.end();
   };
 
-  delete = (id: number) => {
+  updates = async (items: Partial<T>[]) => {
+    this.begin();
+    let sitems = this.getItems();
+    for (const s of items) {
+      let i = sitems.findIndex(v => v.id === s.id);
+      if (i >= 0) {
+        sitems[i] = {
+          ...sitems[i],
+          ...s,
+        };
+      }
+    }
+    this.setItems(sitems);
+    await this.end();
+  };
+
+  delete = async (id: number) => {
+    this.begin();
     this.setItems(
       this.getItems().filter(i => {
         if (i.id !== id) {
@@ -59,6 +98,7 @@ class Db<T extends { id: number }> {
         }
       }),
     );
+    await this.end();
   };
 }
 

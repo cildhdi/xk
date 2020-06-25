@@ -43,10 +43,6 @@ export default class extends React.Component<{}, State> {
   };
 
   componentDidMount = async () => {
-    message.loading({
-      content: '加载数据...',
-      duration: 1,
-    });
     let user = getStorage('user') || undefined;
     this.setState({
       courses: courses.getItems(),
@@ -61,12 +57,11 @@ export default class extends React.Component<{}, State> {
     });
   };
 
-  select = (elective: Elective) => {
+  select = async (elective: Elective) => {
     if (elective.usual || elective.exam || elective.total) {
       message.error('该课程已经登分，无法退课');
     } else {
-      electives.delete(elective.id);
-      message.success('退课成功');
+      await electives.delete(elective.id);
       this.componentDidMount();
     }
   };

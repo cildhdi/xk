@@ -43,10 +43,6 @@ export default class extends React.Component<{}, State> {
   };
 
   componentDidMount = async () => {
-    message.loading({
-      content: '加载数据...',
-      duration: 1,
-    });
     let user = getStorage('user') || undefined;
     this.setState({
       courses: courses.getItems(),
@@ -82,7 +78,7 @@ export default class extends React.Component<{}, State> {
               dataIndex: 'usual',
               key: 'usual',
               render: (v, r: Elective) => {
-                return r.usual ?? '暂未登分';
+                return r.usual || '暂未登分';
               },
             },
             {
@@ -90,7 +86,7 @@ export default class extends React.Component<{}, State> {
               dataIndex: 'exam',
               key: 'exam',
               render: (v, r: Elective) => {
-                return r.exam ?? '暂未登分';
+                return r.exam || '暂未登分';
               },
             },
             {
@@ -98,7 +94,7 @@ export default class extends React.Component<{}, State> {
               dataIndex: 'total',
               key: 'total',
               render: (v, r: Elective) => {
-                return r.total ?? '暂未登分';
+                return r.total || '暂未登分';
               },
             },
           ]}

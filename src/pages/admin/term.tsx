@@ -30,10 +30,6 @@ export default class extends React.Component<{}, State> {
   formRef = React.createRef<FormInstance>();
 
   componentDidMount = async () => {
-    message.loading({
-      content: '加载数据...',
-      duration: 1,
-    });
     this.setState({
       terms: terms.getItems(),
     });
@@ -59,14 +55,10 @@ export default class extends React.Component<{}, State> {
   };
 
   handleOk = async (values: any) => {
-    message.loading({
-      content: '处理中...',
-      duration: 1,
-    });
     if (this.state.isAdd) {
-      terms.insert(values as Term);
+      await terms.insert(values as Term);
     } else {
-      terms.update(values as Term);
+      await terms.update(values as Term);
     }
     this.setState({
       showModal: false,

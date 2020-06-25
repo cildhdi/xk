@@ -43,10 +43,6 @@ export default class extends React.Component<{}, State> {
   };
 
   componentDidMount = async () => {
-    message.loading({
-      content: '加载数据...',
-      duration: 1,
-    });
     this.setState({
       courses: courses.getItems(),
       opends: opends.getItems(),
@@ -56,13 +52,12 @@ export default class extends React.Component<{}, State> {
     });
   };
 
-  select = (opend: Opend) => {
-    electives.insert({
+  select = async (opend: Opend) => {
+    await electives.insert({
       course_id: opend.course_id,
       opend_id: opend.id,
       user_id: this.state.user?.id,
     });
-    message.success('选课成功');
     this.componentDidMount();
   };
 

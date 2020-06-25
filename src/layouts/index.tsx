@@ -55,10 +55,6 @@ export default class IndexLayout extends React.Component<{}, State> {
   };
 
   handleOk = async (values: any) => {
-    message.loading({
-      content: '处理中...',
-      duration: 1,
-    });
     let user = this.state.user;
     if (user) {
       user.name = values.name;
@@ -66,8 +62,7 @@ export default class IndexLayout extends React.Component<{}, State> {
       user.sex = values.sex;
       user.birthday = values.birthday;
       user.birthplace = values.birthplace;
-      users.update(user);
-      message.info('修改成功，请重新登录');
+      await users.update(user);
       location.href = '/login';
     }
     this.setState({
