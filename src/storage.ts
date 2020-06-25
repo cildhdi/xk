@@ -1,8 +1,8 @@
-import { DB } from './db';
-import { APIResponse, ResponseData } from './api';
+import { User, Term } from './db';
 
 export interface Storage {
-  user: ResponseData<'login'>;
+  user: User;
+  term: Term;
 }
 
 export function saveStorage<K extends keyof Storage>(

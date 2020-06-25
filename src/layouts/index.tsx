@@ -8,15 +8,15 @@ import {
   UserOutlined,
 } from '@ant-design/icons';
 import './index.scss';
-import { ResponseData } from '@/api';
 import { getStorage } from '@/storage';
-import { DB } from '@/db';
+import { User } from '@/db';
+import { Link } from 'umi';
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
 
 interface State {
-  user?: DB.BasicUser;
+  user?: User;
 }
 
 export default class IndexLayout extends React.Component<{}, State> {
@@ -25,43 +25,57 @@ export default class IndexLayout extends React.Component<{}, State> {
   componentDidMount() {
     let user = getStorage('user');
     if (user) {
-      this.setState({ user: user.bu });
+      this.setState({ user: user });
     }
   }
 
   render() {
+    if (location.pathname === '/login') {
+      return (
+        <div
+          style={{
+            height: '100%',
+          }}
+        >
+          {this.props.children}
+        </div>
+      );
+    }
     const { user } = this.state;
     return (
       <Layout style={{ minHeight: '100vh' }} className="index-layout">
-        <Sider>
-          <div className="logo">选课系统</div>
-          <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
-            <Menu.Item key="1" icon={<PieChartOutlined />}>
-              Option 1
-            </Menu.Item>
-            <Menu.Item key="2" icon={<DesktopOutlined />}>
-              Option 2
-            </Menu.Item>
-            <SubMenu key="sub1" icon={<UserOutlined />} title="User">
-              <Menu.Item key="3">Tom</Menu.Item>
-              <Menu.Item key="4">Bill</Menu.Item>
-              <Menu.Item key="5">Alex</Menu.Item>
-            </SubMenu>
-            <SubMenu key="sub2" icon={<TeamOutlined />} title="Team">
-              <Menu.Item key="6">Team 1</Menu.Item>
-              <Menu.Item key="8">Team 2</Menu.Item>
-            </SubMenu>
-            <Menu.Item key="9" icon={<FileOutlined />} />
-          </Menu>
-        </Sider>
         <Layout className="site-layout">
-          <Header className="site-layout-background" style={{ padding: 0 }}>
+          <Header className="index-header" style={{ padding: 0 }}>
+            <div className="logo">选课系统</div>
+            {user?.role === '管理员' && (
+              <Menu className="menu" theme="dark" mode="horizontal">
+                <Menu.Item key="1">
+                  <Link to="/admin/academy">学院管理</Link>
+                </Menu.Item>
+                <Menu.Item key="2">
+                  <Link to="/admin/student">学生管理</Link>
+                </Menu.Item>
+                <Menu.Item key="3">
+                  <Link to="/admin/teacher">教师管理</Link>
+                </Menu.Item>
+                <Menu.Item key="4">
+                  <Link to="/admin/term">学期管理</Link>
+                </Menu.Item>
+                <Menu.Item key="5">
+                  <Link to="/admin/course">课程管理</Link>
+                </Menu.Item>
+              </Menu>
+            )}
             {user && (
               <div>
-                {user.Username || '--'} / {DB.roleName[user.Role]}
-                <Button type="primary" danger>
-                  注销
-                </Button>
+                <span className="userinfo">
+                  {user.username || '--'} / {user.role}
+                </span>
+                <Link to="/login">
+                  <Button type="primary" danger>
+                    注销
+                  </Button>
+                </Link>
               </div>
             )}
           </Header>

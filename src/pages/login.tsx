@@ -1,8 +1,10 @@
 import React from 'react';
 import { message } from 'antd';
 import './login.scss';
-import { api, ResponseCode, APIResponse } from '@/api';
 import { saveStorage } from '@/storage';
+import { users } from '@/db';
+import md5 from 'blueimp-md5';
+import { history } from 'umi';
 
 interface State {
   username: string;
@@ -21,13 +23,33 @@ export default class Login extends React.Component<{}, State> {
       return;
     }
     try {
-      let resp = await api.login(this.state);
-      if (resp.code === ResponseCode.Ok) {
+      console.log(
+        `Username: ${this.state.username}  Secret:${md5(this.state.password)}`,
+      );
+      let user = users.query({
+        username: this.state.username,
+        secret: this.state.password,
+      });
+      if (user.length !== 0) {
         message.success('登录成功');
-        saveStorage('user', resp.data);
+        saveStorage('user', user[0]);
+        switch (user[0].role) {
+          case '学生':
+            location.href = '/student';
+            break;
+          case '教师':
+            location.href = '/teacher';
+            break;
+          case '管理员':
+            location.href = '/admin';
+            break;
+          default:
+            break;
+        }
       } else {
         message.error('登录失败，请检查用户名、密码是否正确');
       }
+      this.setState;
     } catch (error) {
       console.error(error);
     }
@@ -53,7 +75,9 @@ export default class Login extends React.Component<{}, State> {
               value={this.state.password}
               onChange={e => this.setState({ password: e.target.value })}
             />
-            <button className="submit" onClick={this.submit}>登录/Login</button>
+            <button className="submit" onClick={this.submit}>
+              登录/Login
+            </button>
           </div>
         </div>
         <div className="footer">

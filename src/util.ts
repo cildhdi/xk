@@ -5,8 +5,5 @@ export const isLoggedin = () => {
   if (!user) {
     return false;
   }
-  if (user.expire && Date.parse(user.expire) > Date.now() && user.token) {
-    return user;
-  }
-  return false;
+  return user;
 };
