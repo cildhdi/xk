@@ -18,7 +18,7 @@ class Db<T extends { id: number }> {
     localStorage.setItem(this.storageKey, JSON.stringify(items));
   };
 
-  insert = (item: T) => {
+  insert = (item: Partial<T>) => {
     let items = this.getItems();
     let maxID = 1;
     for (const i of items) {
@@ -26,7 +26,7 @@ class Db<T extends { id: number }> {
     }
     item.id = Math.max(item.id ?? 0, maxID + 1);
     console.log(item);
-    items.push(item);
+    items.push(item as T);
     this.setItems(items);
   };
 
@@ -49,6 +49,16 @@ class Db<T extends { id: number }> {
       }
     }
     this.setItems(items);
+  };
+
+  delete = (id: number) => {
+    this.setItems(
+      this.getItems().filter(i => {
+        if (i.id !== id) {
+          return i;
+        }
+      }),
+    );
   };
 }
 

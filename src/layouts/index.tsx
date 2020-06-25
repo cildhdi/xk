@@ -132,6 +132,19 @@ export default class IndexLayout extends React.Component<{}, State> {
                 </Menu.Item>
               </Menu>
             )}
+            {user?.role === '学生' && (
+              <Menu className="menu" theme="dark" mode="horizontal">
+                <Menu.Item key="9">
+                  <Link to="/student/opend">选课</Link>
+                </Menu.Item>
+                <Menu.Item key="10">
+                  <Link to="/student/elective">课表</Link>
+                </Menu.Item>
+                <Menu.Item key="11">
+                  <Link to="/student/grade">成绩查询</Link>
+                </Menu.Item>
+              </Menu>
+            )}
             {user && (
               <div>
                 <span className="userinfo">

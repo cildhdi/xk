@@ -21,20 +21,24 @@ import {
   opends,
   User,
   users,
+  electives,
+  Elective,
 } from '@/db';
 import { getStorage, saveStorage } from '@/storage';
-
 
 interface State {
   opends: Opend[];
   courses: Course[];
   users: User[];
+  electives: Elective[];
+  user?: User;
 }
 
 export default class extends React.Component<{}, State> {
   state: State = {
     courses: [],
     opends: [],
+    electives: [],
     users: [],
   };
 
@@ -47,10 +51,20 @@ export default class extends React.Component<{}, State> {
       courses: courses.getItems(),
       opends: opends.getItems(),
       users: users.getItems(),
+      electives: electives.getItems(),
+      user: getStorage('user') ?? undefined,
     });
   };
 
-  select = (opend: Opend) => {};
+  select = (opend: Opend) => {
+    electives.insert({
+      course_id: opend.course_id,
+      opend_id: opend.id,
+      user_id: this.state.user?.id,
+    });
+    message.success('选课成功');
+    this.componentDidMount();
+  };
 
   render() {
     return (
@@ -99,11 +113,23 @@ export default class extends React.Component<{}, State> {
             },
             {
               title: '操作',
-              render: (record: Course) => (
-                <Button type="primary" onClick={() => this.select(record)}>
-                  选课
-                </Button>
-              ),
+              render: (record: Opend) => {
+                let disabled =
+                  this.state.electives.findIndex(
+                    e =>
+                      e.user_id === this.state.user?.id &&
+                      e.course_id === record.course_id,
+                  ) >= 0;
+                return (
+                  <Button
+                    type="primary"
+                    onClick={() => this.select(record)}
+                    disabled={disabled}
+                  >
+                    选课
+                  </Button>
+                );
+              },
             },
           ]}
           dataSource={this.state.opends}
