@@ -1,27 +1,3 @@
-export interface Academy {
-  id: number;
-  name?: string;
-  addr?: string;
-  phone?: string;
-}
-
-export interface User {
-  id: number;
-  username?: string;
-  secret?: string;
-  role?: '管理员' | '学生' | '教师';
-  academy_id?: number;
-  name?: string;
-  sex?: '男' | '女';
-  birthday?: string;
-  birthplace?: string;
-}
-
-export interface Term {
-  id: number;
-  name: string;
-}
-
 class Db<T extends { id: number }> {
   storageKey = 'storageKey';
 
@@ -48,7 +24,8 @@ class Db<T extends { id: number }> {
     for (const i of items) {
       maxID = Math.max(i.id, maxID);
     }
-    item.id = Math.max(item.id, maxID + 1);
+    item.id = Math.max(item.id ?? 0, maxID + 1);
+    console.log(item);
     items.push(item);
     this.setItems(items);
   };
@@ -75,9 +52,63 @@ class Db<T extends { id: number }> {
   };
 }
 
+export interface Academy {
+  id: number;
+  name?: string;
+  addr?: string;
+  phone?: string;
+}
+
+export interface User {
+  id: number;
+  username?: string;
+  secret?: string;
+  role?: '管理员' | '学生' | '教师';
+  academy_id?: number;
+  name?: string;
+  sex?: '男' | '女';
+  birthday?: string;
+  birthplace?: string;
+}
+
+export interface Term {
+  id: number;
+  name: string;
+}
+
+export interface Course {
+  id: number;
+  academy_id?: number;
+  credit?: number;
+  hour?: number;
+  name?: string;
+}
+
+export interface Opend {
+  id: number;
+  course_id?: number;
+  user_id?: number;
+  time?: string;
+  classroom?: string;
+  limit?: number;
+}
+
+export interface Elective {
+  id: number;
+  user_id?: number;
+  course_id?: number;
+  opend_id?: number;
+  usual?: number;
+  exam?: number;
+  total?: number;
+}
+
 export const users = new Db<User>('xk_users');
 export const academys = new Db<Academy>('xk_academys');
 export const terms = new Db<Term>('xk_terms');
+export const courses = new Db<Course>('xk_courses');
+export const opends = new Db<Opend>('xk_opends');
+export const electives = new Db<Elective>('xk_electives');
 
 if (users.query({ role: '管理员' }).length === 0) {
   users.insert({
