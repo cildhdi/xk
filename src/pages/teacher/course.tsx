@@ -159,7 +159,9 @@ export default class extends React.Component<{}, State> {
             >
               <Select placeholder="请选择开课教师" allowClear disabled={true}>
                 {this.state.users.map(v => (
-                  <Option value={v.id}>{v.name}</Option>
+                  <Option value={v.id} key={v.id}>
+                    {v.name}
+                  </Option>
                 ))}
               </Select>
             </Form.Item>

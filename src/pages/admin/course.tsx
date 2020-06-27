@@ -161,7 +161,9 @@ export default class extends React.Component<{}, State> {
             >
               <Select placeholder="请选择学院" allowClear>
                 {this.state.acadamys.map(v => (
-                  <Option value={v.id}>{v.name}</Option>
+                  <Option value={v.id} key={v.id}>
+                    {v.name}
+                  </Option>
                 ))}
               </Select>
             </Form.Item>

@@ -145,12 +145,14 @@ export default class IndexLayout extends React.Component<{}, State> {
                 <span className="userinfo">
                   {user.name || '--'} / {user.role}
                 </span>
-                <Button onClick={this.onModify} type="dashed">
-                  修改个人信息
+                <Button onClick={this.onModify} type="link" size="small">
+                  修改信息
                 </Button>
-                <Divider type="vertical" />
+                <Button onClick={this.onModify} type="link" size="small">
+                  修改密码
+                </Button>
                 <Link to="/login">
-                  <Button type="primary" danger>
+                  <Button type="primary" danger size="small">
                     注销
                   </Button>
                 </Link>
