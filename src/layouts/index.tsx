@@ -22,11 +22,17 @@ const { SubMenu } = Menu;
 interface State {
   user?: User;
   showModal: boolean;
+  showPswd: boolean;
+  curPswd: string;
+  newPswd: string;
 }
 
 export default class IndexLayout extends React.Component<{}, State> {
   state: State = {
     showModal: false,
+    showPswd: false,
+    curPswd: '',
+    newPswd: '',
   };
 
   formRef = React.createRef<FormInstance>();
@@ -75,6 +81,24 @@ export default class IndexLayout extends React.Component<{}, State> {
     this.setState({
       showModal: false,
     });
+  };
+
+  handlePswdCancel = () => {
+    this.setState({
+      showPswd: false,
+    });
+  };
+
+  changePswd = async () => {
+    let user = getStorage('user');
+    if (user && user.secret === this.state.curPswd && this.state.newPswd) {
+      user.secret = this.state.newPswd;
+      users.update(user);
+      this.handlePswdCancel();
+      location.href = '/login';
+    } else {
+      message.error('密码不匹配！');
+    }
   };
 
   render() {
@@ -148,7 +172,11 @@ export default class IndexLayout extends React.Component<{}, State> {
                 <Button onClick={this.onModify} type="link" size="small">
                   修改信息
                 </Button>
-                <Button onClick={this.onModify} type="link" size="small">
+                <Button
+                  onClick={() => this.setState({ showPswd: true })}
+                  type="link"
+                  size="small"
+                >
                   修改密码
                 </Button>
                 <Link to="/login">
@@ -229,6 +257,42 @@ export default class IndexLayout extends React.Component<{}, State> {
             </Form.Item>
             <Form.Item wrapperCol={{ offset: 8, span: 6 }}>
               <Button type="primary" htmlType="submit">
+                提交
+              </Button>
+            </Form.Item>
+          </Form>
+        </Modal>
+        <Modal
+          title={'修改密码'}
+          visible={this.state.showPswd}
+          onCancel={this.handlePswdCancel}
+          footer={null}
+        >
+          <Form labelCol={{ span: 8 }} wrapperCol={{ span: 16 }}>
+            <Form.Item
+              label="当前密码"
+              rules={[{ required: true, message: '不能为空' }]}
+            >
+              <Input.Password
+                value={this.state.curPswd}
+                onChange={e => this.setState({ curPswd: e.target.value })}
+              />
+            </Form.Item>
+            <Form.Item
+              label="新密码"
+              rules={[{ required: true, message: '不能为空' }]}
+            >
+              <Input.Password
+                value={this.state.newPswd}
+                onChange={e => this.setState({ newPswd: e.target.value })}
+              />
+            </Form.Item>
+            <Form.Item wrapperCol={{ offset: 8, span: 6 }}>
+              <Button
+                type="primary"
+                htmlType="submit"
+                onClick={this.changePswd}
+              >
                 提交
               </Button>
             </Form.Item>
